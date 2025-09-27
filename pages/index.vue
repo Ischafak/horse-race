@@ -25,53 +25,167 @@
         </li>
       </ol>
     </div>
+
+    <div v-if="store.allResults.length" class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">
+        Tüm Yarış Sonuçları
+      </h2>
+
+      <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
+        <h3 class="text-lg font-semibold mb-3 text-blue-600">
+          Round {{ roundData.round }} - {{ roundData.distance }}m
+        </h3>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Sıra
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  At
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Süre
+                </th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Renk
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr
+                v-for="(result, resultIndex) in roundData.results"
+                :key="resultIndex"
+                class="hover:bg-gray-50 transition-colors"
+              >
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {{ resultIndex + 1 }}
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  {{ getHorseName(result.horseId) }}
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  {{ result.time }}s
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div
+                      class="w-4 h-4 rounded-full mr-2"
+                      :class="`bg-${getHorseColor(result.horseId)}`"
+                    >
+                    </div>
+                    <span class="text-sm text-gray-600">{{ getHorseColor(result.horseId) }}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- En Çok Kazanan Atlar Tablosu -->
+    <div v-if="store.allResults.length" class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">
+        🏆 En Çok Kazanan Atlar
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+          <thead class="bg-gradient-to-r from-yellow-50 to-yellow-100">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Sıra
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                At
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Kazanma Sayısı
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Renk
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Condition
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr
+              v-for="(horse, index) in store.topWinningHorses"
+              :key="horse.id"
+              class="hover:bg-gray-50 transition-colors"
+            >
+              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                <div class="flex items-center">
+                  <span v-if="index === 0" class="text-yellow-500 text-lg mr-2">🥇</span>
+                  <span v-else-if="index === 1" class="text-gray-400 text-lg mr-2">🥈</span>
+                  <span v-else-if="index === 2" class="text-orange-500 text-lg mr-2">🥉</span>
+                  <span v-else class="text-gray-400 mr-2">{{ index + 1 }}.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 font-medium">
+                {{ horse.name }}
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  :class="horse.wins > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
+                >
+                  {{ horse.wins }} {{ horse.wins === 1 ? 'kazanma' : 'kazanma' }}
+                </span>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div
+                    class="w-4 h-4 rounded-full mr-2"
+                    :class="`bg-${horse.color}`"
+                  >
+                  </div>
+                  <span class="text-sm text-gray-600">{{ horse.color }}</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                <div class="flex items-center">
+                  <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                    <div
+                      class="h-2 rounded-full transition-all duration-300"
+                      :class="horse.condition >= 80 ? 'bg-green-500' : horse.condition >= 60 ? 'bg-yellow-500' : 'bg-red-500'"
+                      :style="`width: ${horse.condition}%`"
+                    >
+                    </div>
+                  </div>
+                  <span class="text-xs text-gray-600">{{ horse.condition }}%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from '~/store/store.js'
 
-const horses = ref([])
+// Store'u kullan
+const store = useStore()
+
 const roundHorses = ref([])
-const results = ref([])
 
-const currentRound = ref(0)
+const horses = computed(() => store.allHorses)
+const currentRound = computed(() => store.currentRound)
+const results = computed(() => store.currentRoundResults)
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 
-function initHorses () {
-  console.log('initHorses')
-  const colors = [
-    'red-500', // saf kırmızı
-    'orange-500', // turuncu
-    'amber-500', // sarımsı-turuncu
-    'yellow-500', // saf sarı
-    'lime-500', // sarı-yeşil
-    'green-500', // klasik yeşil
-    'emerald-500', // yeşil-mavi arası
-    'teal-500', // turkuaz
-    'cyan-500', // açık turkuaz
-    'sky-500', // gök mavisi
-    'blue-500', // saf mavi
-    'indigo-500', // koyu mavi-mor
-    'violet-500', // menekşe
-    'fuchsia-500', // parlak mor-pembe
-    'pink-500', // açık pembe
-    'stone-500', // toprak rengi
-    'neutral-500', // nötr gri
-    'slate-500', // koyu gri-mavi
-    'zinc-500', // gri-metal
-    'amber-700' // koyu kahveye yakın amber
-  ]
+// Store'dan atları başlat
+store.initHorses()
 
-  horses.value = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    name: `At ${i + 1}`,
-    color: colors[i % colors.length],
-    condition: Math.floor(Math.random() * 20) + 80, // 80-100 arası condition
-    status: 'not-started' // not-started, running, finished
-  }))
-}
-initHorses()
 // İlk geldiğinde atları göster ama round'u artırma
 roundHorses.value = [...horses.value]
   .sort(() => Math.random() - 0.5)
@@ -82,10 +196,7 @@ roundHorses.value.forEach((horse) => {
 })
 
 function nextRace () {
-  if (currentRound.value >= roundDistances.length) { return }
-
-  // Results'ı temizle
-  results.value = []
+  if (store.currentRound >= roundDistances.length) { return }
 
   // 10 rastgele at seç
   roundHorses.value = [...horses.value]
@@ -97,13 +208,14 @@ function nextRace () {
     horse.status = 'not-started'
   })
 
-  currentRound.value++
+  // Store'da sonraki tura geç
+  store.nextRound()
 }
 
 function startRace () {
-  if (currentRound.value >= roundDistances.length || roundHorses.value.length === 0) { return }
+  if (store.currentRound >= roundDistances.length || roundHorses.value.length === 0) { return }
 
-  const distance = roundDistances[currentRound.value]
+  const distance = roundDistances[store.currentRound]
 
   // 2 saniye sonra tüm atları aynı anda başlat
   setTimeout(() => {
@@ -121,8 +233,8 @@ function startRace () {
       }
     }).sort((a, b) => a.time - b.time)
 
-    // Tüm atlar aynı anda başlasın
-    results.value = raceResults
+    // Store'a sonuçları kaydet
+    store.saveRoundResults(store.currentRound, raceResults, distance)
 
     // Her atın kendi süresinde bitirmesini sağla
     roundHorses.value.forEach((horse) => {
@@ -143,5 +255,10 @@ function startRace () {
 function getHorseName (id) {
   const h = horses.value.find(h => h.id === id)
   return h?.name || 'Bilinmeyen At'
+}
+
+function getHorseColor (id) {
+  const h = horses.value.find(h => h.id === id)
+  return h?.color || 'gray-500'
 }
 </script>

@@ -4,6 +4,8 @@
 
     <race-controls
       :current-round="currentRound"
+      :can-start-race="roundHorses.length > 0"
+      @nextRace="nextRace"
       @startRace="startRace"
     />
 
@@ -70,11 +72,19 @@ function initHorses () {
   }))
 }
 initHorses()
+// İlk geldiğinde atları göster ama round'u artırma
+roundHorses.value = [...horses.value]
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 10)
 
-function startRace () {
+roundHorses.value.forEach((horse) => {
+  horse.status = 'not-started'
+})
+
+function nextRace () {
   if (currentRound.value >= roundDistances.length) { return }
 
-  // Önce results'ı temizle ki atlar en soldan başlasın
+  // Results'ı temizle
   results.value = []
 
   // 10 rastgele at seç
@@ -82,13 +92,18 @@ function startRace () {
     .sort(() => Math.random() - 0.5)
     .slice(0, 10)
 
-  const distance = roundDistances[currentRound.value]
-
-  // Önce results'ı temizle ve atları not-started yap
-  results.value = []
+  // Atları not-started yap
   roundHorses.value.forEach((horse) => {
     horse.status = 'not-started'
   })
+
+  currentRound.value++
+}
+
+function startRace () {
+  if (currentRound.value >= roundDistances.length || roundHorses.value.length === 0) { return }
+
+  const distance = roundDistances[currentRound.value]
 
   // 2 saniye sonra tüm atları aynı anda başlat
   setTimeout(() => {
@@ -123,8 +138,6 @@ function startRace () {
       }
     })
   }, 2000)
-
-  currentRound.value++
 }
 
 function getHorseName (id) {

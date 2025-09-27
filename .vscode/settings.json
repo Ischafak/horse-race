@@ -1,0 +1,17 @@
+{
+  "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
+  "css.customData": [".vscode/tailwind.json"],
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": false,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "vue"],
+  "eslint.options": {
+    "extensions": [".js", ".vue"]
+  },
+  "scss.lint.unknownAtRules": "ignore"
+}

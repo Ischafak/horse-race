@@ -1,0 +1,11 @@
+.tippy-box {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.tippy-box[data-theme~='dark'] {
+  background-color: theme('colors.gray.900');
+ 
+}
+
+@import 'tippy.js/dist/tippy.css'

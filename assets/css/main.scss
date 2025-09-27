@@ -1,0 +1,17 @@
+body {
+  font-family: 'Roboto', 'Clear Sans', 'SF Pro Text', -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell,
+    Noto Sans, sans-serif, BlinkMacSystemFont, 'Segoe UI';
+  @apply text-muk-md;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.icon-stroke-color * {
+  stroke: currentColor !important;
+}
+
+.icon-fill-color * {
+  fill: currentColor !important;
+}

@@ -1,0 +1,6 @@
+export default [
+  {
+    UserAgent: '*',
+    Allow: '/'
+  }
+];

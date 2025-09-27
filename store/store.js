@@ -1,4 +1,4 @@
-import { useRouter } from 'nuxt/app'
+
 export const useStore = defineStore('race', {
   state: () => ({
     // Tüm atlar
@@ -72,6 +72,7 @@ export const useStore = defineStore('race', {
         round,
         results,
         distance,
+        finished: false, // Yarış henüz bitmedi
         timestamp: new Date().toISOString()
       }
 
@@ -117,6 +118,14 @@ export const useStore = defineStore('race', {
     // Belirli turun sonuçlarını getir
     getRoundResults (round) {
       return this.raceResults.find(r => r.round === round)
+    },
+
+    // Mevcut turun yarışını bitir
+    finishCurrentRace () {
+      const roundIndex = this.raceResults.findIndex(r => r.round === this.currentRound)
+      if (roundIndex >= 0) {
+        this.raceResults[roundIndex].finished = true
+      }
     }
   }
 })

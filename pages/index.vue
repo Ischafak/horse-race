@@ -20,6 +20,8 @@
       <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
         <h3 class="text-lg font-semibold mb-3 text-blue-600">
           Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
+          <span v-if="roundData.finished" class="ml-2 text-green-600 font-bold">✅ Bitti</span>
+          <span v-else class="ml-2 text-orange-600 font-bold">🏃 Devam Ediyor</span>
         </h3>
 
         <div class="overflow-x-auto">
@@ -208,6 +210,9 @@ function startRace () {
     // Store'a sonuçları kaydet
     store.saveRoundResults(store.currentRound, raceResults, distance)
 
+    // En uzun süreyi bul (son atın bitirme süresi)
+    const maxTime = Math.max(...raceResults.map(r => r.time))
+
     // Her atın kendi süresinde bitirmesini sağla
     roundHorses.value.forEach((horse) => {
       const result = raceResults.find(r => r.horseId === horse.id)
@@ -221,6 +226,11 @@ function startRace () {
         }, result.time * 1000) // Animasyon süresiyle uyumlu
       }
     })
+
+    // Son at bittiğinde yarışı bitir
+    setTimeout(() => {
+      store.finishCurrentRace()
+    }, maxTime * 1000)
   }, 2000)
 }
 

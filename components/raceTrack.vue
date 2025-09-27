@@ -93,10 +93,22 @@ function getHorseStyle (horseId) {
 
   const animationDuration = time
 
+  // Rastgele animasyon eğrisi seç
+  const easingOptions = [
+    'ease-out', // Başta hızlı, sonda yavaş
+    'ease-in', // Başta yavaş, sonda hızlı
+    'ease-in-out', // Başta yavaş, ortada hızlı, sonda yavaş
+    'linear' // Sabit hız
+  ]
+
+  // Gerçek rastgele eğri seç
+  const easingIndex = Math.floor(Math.random() * easingOptions.length)
+  const easing = easingOptions[easingIndex]
+
   return {
     left: `${progress}%`,
     transform: 'translateY(-50%)',
-    transition: `left ${animationDuration}s ease-out`
+    transition: `left ${animationDuration}s ${easing}`
   }
 }
 </script>

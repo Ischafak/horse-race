@@ -3,6 +3,8 @@ export const useStore = defineStore('race', {
   state: () => ({
     // Tüm atlar
     horses: [],
+    // Mevcut turda yarışan atlar
+    roundHorses: [],
     // Tüm yarış sonuçları - her tur için ayrı array
     raceResults: [], // [{ round: 1, results: [...], distance: 1200 }, ...]
     currentRound: 0,
@@ -11,6 +13,8 @@ export const useStore = defineStore('race', {
   getters: {
     // Tüm atlar
     allHorses: state => state.horses,
+    // Mevcut turda yarışan atlar
+    currentRoundHorses: state => state.roundHorses,
     // Mevcut turun sonuçları
     currentRoundResults: (state) => {
       return state.raceResults.find(r => r.round === state.currentRound)?.results || []
@@ -85,6 +89,18 @@ export const useStore = defineStore('race', {
       if (this.currentRound < this.totalRounds) {
         this.currentRound++
       }
+    },
+
+    // Mevcut turda yarışan atları seç
+    selectRoundHorses () {
+      this.roundHorses = [...this.horses]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10)
+
+      // Atları not-started yap
+      this.roundHorses.forEach((horse) => {
+        horse.status = 'not-started'
+      })
     },
 
     // Yarışı sıfırla

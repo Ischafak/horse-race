@@ -3,28 +3,14 @@
     <h1>At Yarışı Oyunu</h1>
 
     <race-controls
-      :current-round="currentRound"
-      :can-start-race="roundHorses.length > 0"
       @nextRace="nextRace"
       @startRace="startRace"
     />
 
     <race-track
       v-if="roundHorses.length"
-      :horses="roundHorses"
       :distance="roundDistances[currentRound]"
-      :results="results"
-      :current-round="currentRound"
     />
-
-    <div v-if="results.length">
-      <h2>Sonuçlar</h2>
-      <ol>
-        <li v-for="(res, index) in results" :key="index">
-          {{ getHorseName(res.horseId) }} - {{ res }} sn
-        </li>
-      </ol>
-    </div>
 
     <div v-if="store.allResults.length" class="mt-8">
       <h2 class="text-2xl font-bold mb-4">
@@ -33,7 +19,7 @@
 
       <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
         <h3 class="text-lg font-semibold mb-3 text-blue-600">
-          Round {{ roundData.round }} - {{ roundData.distance }}m
+          Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
         </h3>
 
         <div class="overflow-x-auto">
@@ -176,9 +162,8 @@ import { useStore } from '~/store/store.js'
 // Store'u kullan
 const store = useStore()
 
-const roundHorses = ref([])
-
 const horses = computed(() => store.allHorses)
+const roundHorses = computed(() => store.currentRoundHorses)
 const currentRound = computed(() => store.currentRound)
 const results = computed(() => store.currentRoundResults)
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
@@ -187,29 +172,16 @@ const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 store.initHorses()
 
 // İlk geldiğinde atları göster ama round'u artırma
-roundHorses.value = [...horses.value]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 10)
-
-roundHorses.value.forEach((horse) => {
-  horse.status = 'not-started'
-})
+store.selectRoundHorses()
 
 function nextRace () {
   if (store.currentRound >= roundDistances.length) { return }
 
-  // 10 rastgele at seç
-  roundHorses.value = [...horses.value]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 10)
-
-  // Atları not-started yap
-  roundHorses.value.forEach((horse) => {
-    horse.status = 'not-started'
-  })
-
   // Store'da sonraki tura geç
   store.nextRound()
+
+  // Yeni atları seç
+  store.selectRoundHorses()
 }
 
 function startRace () {

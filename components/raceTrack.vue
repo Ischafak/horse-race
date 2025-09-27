@@ -57,21 +57,25 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useStore } from '~/store/store.js'
+
+const store = useStore()
 
 const props = defineProps({
-  horses: Array,
-  distance: Number,
-  results: Array,
-  currentRound: Number
+  distance: Number
 })
 
+const horses = computed(() => store.currentRoundHorses)
+const results = computed(() => store.currentRoundResults)
+const currentRound = computed(() => store.currentRound)
+
 function getTime (horseId) {
-  const res = props.results.find(r => r.horseId === horseId)
+  const res = results.value.find(r => r.horseId === horseId)
   return res ? res.time : 0
 }
 
 function isHorseRunning (horseId) {
-  const horse = props.horses.find(h => h.id === horseId)
+  const horse = horses.value.find(h => h.id === horseId)
   const status = horse ? horse.status : 'not-started'
   console.log('isHorseRunning', horseId, status, 'running:', status === 'running')
   return status === 'running'

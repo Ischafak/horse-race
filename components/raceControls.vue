@@ -13,7 +13,13 @@
 </template>
 
 <script setup>
-defineProps(['currentRound', 'canStartRace'])
+import { computed } from 'vue'
+import { useStore } from '~/store/store.js'
+
+const store = useStore()
+
+const currentRound = computed(() => store.currentRound)
+const canStartRace = computed(() => store.currentRoundHorses.length > 0)
 </script>
 
 <style scoped>

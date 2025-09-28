@@ -40,7 +40,7 @@
             :style="getHorseStyle(horse.id)"
           >
             <NuxtLink :to="`/horse/${horse.id}`" class="block">
-              <div class="horse-item" :class="{ 'horse-running': isHorseRunning(horse.id) }">
+              <div v-tippy="horse.name" class="horse-item" :class="{ 'horse-running': isHorseRunning(horse.id) }">
                 <v-icon
                   name="horse-riding-icon"
                   :is-filled="true"
@@ -100,7 +100,7 @@ function isHorseRunning (horseId) {
 function getHorseStyle (horseId) {
   const horse = horses.value.find(h => h.id === horseId)
   const time = getTime(horseId)
-  
+
   // Eğer at henüz başlamamışsa veya yarış bitmemişse başlangıç pozisyonunda
   if (!horse || horse.status === 'not-started' || time === 0) {
     const rotation = Math.sin(Date.now() * 0.005 + horseId) * 3
@@ -118,7 +118,7 @@ function getHorseStyle (horseId) {
 
     const easingOptions = [
       'ease-out',
-      'ease-in', 
+      'ease-in',
       'ease-in-out',
       'linear'
     ]

@@ -56,7 +56,7 @@ export const useStore = defineStore('race', {
 
       this.horses = Array.from({ length: 20 }, (_, i) => ({
         id: i + 1,
-        name: `At ${i + 1}`,
+        name: `Horse ${i + 1}`,
         color: colors[i % colors.length],
         condition: Math.floor(Math.random() * 20) + 80, // 80-100 arası condition
         status: 'not-started' // not-started, running, finished

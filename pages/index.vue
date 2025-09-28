@@ -8,9 +8,9 @@
       </div>
       <div>
         <race-controls
-          @nextRace="nextRace"
-          @startRace="startRace"
-          @resetRace="resetRace"
+          @next-race="nextRace"
+          @start-race="startRace"
+          @reset-race="resetRace"
         />
       </div>
     </div>
@@ -32,8 +32,6 @@
       <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
         <h3 class="text-lg font-semibold mb-3 text-blue-600">
           Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
-          <span v-if="roundData.finished" class="ml-2 text-green-600 font-bold">✅ Bitti</span>
-          <span v-else class="ml-2 text-orange-600 font-bold">🏃 Devam Ediyor</span>
         </h3>
 
         <div class="overflow-x-auto">
@@ -64,7 +62,7 @@
                   {{ resultIndex + 1 }}
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                  {{ getHorseName(result.horseId) }}
+                  {{ result.name }}
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                   {{ result.time }}s
@@ -73,10 +71,10 @@
                   <div class="flex items-center">
                     <div
                       class="w-4 h-4 rounded-full mr-2"
-                      :class="`bg-${getHorseColor(result.horseId)}`"
+                      :class="`bg-${result.color}`"
                     >
                     </div>
-                    <span class="text-sm text-gray-600">{{ getHorseColor(result.horseId) }}</span>
+                    <span class="text-sm text-gray-600">{{ result.color }}</span>
                   </div>
                 </td>
               </tr>
@@ -189,19 +187,15 @@ onMounted(() => {
   startSound.value = new Audio('/sound/race-start.mp3')
   startSound.value.preload = 'auto'
 })
-// Store'dan atları başlat
 store.initHorses()
 
-// İlk geldiğinde atları göster ama round'u artırma
 store.selectRoundHorses()
 
 function nextRace () {
   if (store.currentRound >= roundDistances.length) { return }
 
-  // Store'da sonraki tura geç
   store.nextRound()
 
-  // Yeni atları seç
   store.selectRoundHorses()
 }
 
@@ -216,7 +210,7 @@ function startRace () {
 
   if (startSound.value) {
     startSound.value.play().catch((error) => {
-      console.log('Ses çalınamadı:', error)
+      console.log('Sound play error:', error)
     })
   }
 
@@ -231,43 +225,31 @@ function startRace () {
       const time = distance / (baseSpeed * speedMultiplier)
       return {
         horseId: horse.id,
+        name: horse.name,
+        color: horse.color,
+        condition: horse.condition,
         time: parseFloat(time.toFixed(2))
       }
     }).sort((a, b) => a.time - b.time)
 
-    // Store'a sonuçları kaydet
     store.saveRoundResults(store.currentRound, raceResults, distance)
 
-    // En uzun süreyi bul (son atın bitirme süresi)
     const maxTime = Math.max(...raceResults.map(r => r.time))
 
-    // Her atın kendi süresinde bitirmesini sağla
     roundHorses.value.forEach((horse) => {
       const result = raceResults.find(r => r.horseId === horse.id)
       if (result) {
         setTimeout(() => {
           horse.status = 'finished'
-          // Sadece bu yarışta koşan atın condition'ı 10 azalt
-          const oldCondition = horse.condition
           horse.condition = Math.max(10, horse.condition - 10)
-        }, result.time * 1000) // Animasyon süresiyle uyumlu
+        }, result.time * 1000)
       }
     })
 
-    // Son at bittiğinde yarışı bitir
     setTimeout(() => {
       store.finishCurrentRace()
     }, maxTime * 1000)
   }, 4000)
 }
 
-function getHorseName (id) {
-  const h = horses.value.find(h => h.id === id)
-  return h?.name || 'Bilinmeyen At'
-}
-
-function getHorseColor (id) {
-  const h = horses.value.find(h => h.id === id)
-  return h?.color || 'gray-500'
-}
 </script>

@@ -30,7 +30,6 @@ export default defineNuxtConfig({
     autoImports: ['defineStore', 'acceptHMRUpdate']
   },
 
-
   i18n: {
     strategy: 'no_prefix',
     locales: ['tr', 'en'],
@@ -85,4 +84,6 @@ export default defineNuxtConfig({
         : undefined
     }
   },
+
+  compatibilityDate: '2025-09-28',
 })

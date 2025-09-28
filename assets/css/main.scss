@@ -993,7 +993,7 @@ $delayStep: 20ms;
     }
     
     .checkbox-icon.checkbox-checked {
-      background-image: url('/Data/check-disabled.svg');
+      background-image: url('/data/check-disabled.svg');
     }
   }
   .mukellef-radio {
@@ -1024,7 +1024,7 @@ $delayStep: 20ms;
     
   }
   .checkbox-icon.checkbox-checked {
-    background-image: url('/Data/check.svg'); /* Seçili ikon */
+    background-image: url('/data/check.svg'); /* Seçili ikon */
     background-position: center;
     background-repeat: no-repeat;
   }
@@ -1260,7 +1260,7 @@ $delayStep: 20ms;
       }
     }
     .radio-icon {
-      background-image: url('/Data/check-white.svg'); /* Seçili ikon */
+      background-image: url('/data/check-white.svg'); /* Seçili ikon */
       background-position: center;
       background-repeat: no-repeat;
     }

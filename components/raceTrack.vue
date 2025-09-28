@@ -39,15 +39,17 @@
             class="horse-container"
             :style="getHorseStyle(horse.id)"
           >
-            <div class="horse-item" :class="{ 'horse-running': isHorseRunning(horse.id) }">
-              <v-icon
-                name="horse-riding-icon"
-                :is-filled="true"
-                :icon-color="horse.color"
-                size="dmuk-md"
-                class="horse-icon"
-              />
-            </div>
+            <NuxtLink :to="`/horse/${horse.id}`" class="block">
+              <div class="horse-item" :class="{ 'horse-running': isHorseRunning(horse.id) }">
+                <v-icon
+                  name="horse-riding-icon"
+                  :is-filled="true"
+                  :icon-color="horse.color"
+                  size="dmuk-md"
+                  class="horse-icon hover:scale-110 transition-transform cursor-pointer"
+                />
+              </div>
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -96,8 +98,11 @@ function isHorseRunning (horseId) {
 }
 
 function getHorseStyle (horseId) {
+  const horse = horses.value.find(h => h.id === horseId)
   const time = getTime(horseId)
-  if (time === 0) {
+  
+  // Eğer at henüz başlamamışsa veya yarış bitmemişse başlangıç pozisyonunda
+  if (!horse || horse.status === 'not-started' || time === 0) {
     const rotation = Math.sin(Date.now() * 0.005 + horseId) * 3
     return {
       left: '0%',
@@ -106,26 +111,42 @@ function getHorseStyle (horseId) {
     }
   }
 
-  const progress = 100
+  // Eğer at koşuyorsa animasyonu başlat
+  if (horse.status === 'running') {
+    const progress = 100
+    const animationDuration = time
 
-  const animationDuration = time
+    const easingOptions = [
+      'ease-out',
+      'ease-in', 
+      'ease-in-out',
+      'linear'
+    ]
 
-  // Rastgele animasyon eğrisi seç
-  const easingOptions = [
-    'ease-out', // Başta hızlı, sonda yavaş
-    'ease-in', // Başta yavaş, sonda hızlı
-    'ease-in-out', // Başta yavaş, ortada hızlı, sonda yavaş
-    'linear' // Sabit hız
-  ]
+    const easingIndex = Math.floor(Math.random() * easingOptions.length)
+    const easing = easingOptions[easingIndex]
 
-  // Gerçek rastgele eğri seç
-  const easingIndex = Math.floor(Math.random() * easingOptions.length)
-  const easing = easingOptions[easingIndex]
+    return {
+      left: `${progress}%`,
+      transform: 'translateY(-50%)',
+      transition: `left ${animationDuration}s ${easing}`
+    }
+  }
 
+  // Eğer at bitirmişse bitiş çizgisinde
+  if (horse.status === 'finished') {
+    return {
+      left: '100%',
+      transform: 'translateY(-50%)',
+      transition: 'none'
+    }
+  }
+
+  // Varsayılan olarak başlangıç pozisyonu
   return {
-    left: `${progress}%`,
+    left: '0%',
     transform: 'translateY(-50%)',
-    transition: `left ${animationDuration}s ${easing}`
+    transition: 'none'
   }
 }
 </script>

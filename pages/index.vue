@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <div class="bg-gray-100 p-4 border-b-1 border-gray-200 flex justify-between items-center gap-4 md:flex-row flex-col">
-      <div>
-        <p class="text-2xl font-bold">
-          At Yarışı Oyunu
-        </p>
-      </div>
-      <div>
+  <div class="py-6">
+    <!-- Race Controls -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+      <div class="bg-white rounded-lg shadow-sm p-6">
         <race-controls
           @next-race="nextRace"
           @start-race="startRace"
@@ -15,7 +11,8 @@
       </div>
     </div>
 
-    <div class="px-4">
+    <!-- Race Track -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div>
         <race-track
           v-if="roundHorses.length"
@@ -24,154 +21,80 @@
       </div>
     </div>
 
-    <div v-if="store.allResults.length" class="mt-8">
-      <h2 class="text-2xl font-bold mb-4">
-        Tüm Yarış Sonuçları
-      </h2>
+    <!-- Results Section -->
+    <div v-if="store.allResults.length" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-2xl font-bold mb-6 text-gray-900">
+          All Race Results
+        </h2>
 
-      <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
-        <h3 class="text-lg font-semibold mb-3 text-blue-600">
-          Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
-        </h3>
+        <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
+          <h3 class="text-lg font-semibold mb-3 text-blue-600">
+            Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
+          </h3>
 
-        <div class="overflow-x-auto">
-          <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sıra
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  At
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Süre
-                </th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Renk
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr
-                v-for="(result, resultIndex) in roundData.results"
-                :key="resultIndex"
-                class="hover:bg-gray-50 transition-colors"
-              >
-                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {{ resultIndex + 1 }}
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                  {{ result.name }}
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                  {{ result.time }}s
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div
-                      class="w-4 h-4 rounded-full mr-2"
-                      :class="`bg-${result.color}`"
-                    >
-                    </div>
-                    <span class="text-sm text-gray-600">{{ result.color }}</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- En Çok Kazanan Atlar Tablosu -->
-    <div v-if="store.allResults.length" class="mt-8">
-      <h2 class="text-2xl font-bold mb-4">
-        🏆 En Çok Kazanan Atlar
-      </h2>
-
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-          <thead class="bg-gradient-to-r from-yellow-50 to-yellow-100">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Sıra
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                At
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Kazanma Sayısı
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Renk
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Condition
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr
-              v-for="(horse, index) in store.topWinningHorses"
-              :key="horse.id"
-              class="hover:bg-gray-50 transition-colors"
-            >
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                <div class="flex items-center">
-                  <span v-if="index === 0" class="text-yellow-500 text-lg mr-2">🥇</span>
-                  <span v-else-if="index === 1" class="text-gray-400 text-lg mr-2">🥈</span>
-                  <span v-else-if="index === 2" class="text-orange-500 text-lg mr-2">🥉</span>
-                  <span v-else class="text-gray-400 mr-2">{{ index + 1 }}.</span>
-                </div>
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 font-medium">
-                {{ horse.name }}
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                <span
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                  :class="horse.wins > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Rank
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Horse
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Time
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Color
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr
+                  v-for="(result, resultIndex) in roundData.results"
+                  :key="resultIndex"
+                  class="hover:bg-gray-50 transition-colors"
                 >
-                  {{ horse.wins }} {{ horse.wins === 1 ? 'kazanma' : 'kazanma' }}
-                </span>
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div
-                    class="w-4 h-4 rounded-full mr-2"
-                    :class="`bg-${horse.color}`"
-                  >
-                  </div>
-                  <span class="text-sm text-gray-600">{{ horse.color }}</span>
-                </div>
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                <div class="flex items-center">
-                  <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                    <div
-                      class="h-2 rounded-full transition-all duration-300"
-                      :class="horse.condition >= 80 ? 'bg-green-500' : horse.condition >= 60 ? 'bg-yellow-500' : 'bg-red-500'"
-                      :style="`width: ${horse.condition}%`"
+                  <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {{ resultIndex + 1 }}
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                    <NuxtLink
+                      :to="`/horse/${result.horseId}`"
+                      class="text-blue-600 hover:text-blue-800 hover:underline font-medium"
                     >
+                      {{ result.name }}
+                    </NuxtLink>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                    {{ result.time }}s
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div
+                        class="w-4 h-4 rounded-full mr-2"
+                        :class="`bg-${result.color}`"
+                      >
+                      </div>
+                      <span class="text-sm text-gray-600">{{ result.color }}</span>
                     </div>
-                  </div>
-                  <span class="text-xs text-gray-600">{{ horse.condition }}%</span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from '~/store/store.js'
 
-// Store'u kullan
 const store = useStore()
 
 const horses = computed(() => store.allHorses)
@@ -183,13 +106,55 @@ const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 // Ses dosyası için ref
 const startSound = ref(null)
 
+// Race timeout'larını sakla
+const raceStartTimeout = ref(null)
+const raceEndTimeout = ref(null)
+
 onMounted(() => {
   startSound.value = new Audio('/sound/race-start.mp3')
   startSound.value.preload = 'auto'
 })
+
+// Race timeout'larını temizle
+function clearRaceTimeouts () {
+  if (raceStartTimeout.value) {
+    clearTimeout(raceStartTimeout.value)
+    raceStartTimeout.value = null
+  }
+  if (raceEndTimeout.value) {
+    clearTimeout(raceEndTimeout.value)
+    raceEndTimeout.value = null
+  }
+}
+
+onBeforeUnmount(() => {
+  clearRaceTimeouts()
+
+  // Yarış bitmeden çıkarsa o turun sonuçlarını sil
+  const currentRoundData = store.raceResults.find(r => r.round === store.currentRound)
+  if (currentRoundData && !currentRoundData.finished) {
+    // O turun sonuçlarını sil
+    store.raceResults = store.raceResults.filter(r => r.round !== store.currentRound)
+
+    // Atları not-started yap
+    store.roundHorses.forEach((horse) => {
+      horse.status = 'not-started'
+    })
+  }
+
+  // Ses çalıyorsa durdur
+  if (startSound.value) {
+    startSound.value.pause()
+    startSound.value.currentTime = 0
+  }
+})
+
 store.initHorses()
 
-store.selectRoundHorses()
+// Sadece ilk yüklemede atlar seçilsin
+if (store.currentRoundHorses.length === 0) {
+  store.selectRoundHorses()
+}
 
 function nextRace () {
   if (store.currentRound >= roundDistances.length) { return }
@@ -214,7 +179,7 @@ function startRace () {
     })
   }
 
-  setTimeout(() => {
+  raceStartTimeout.value = setTimeout(() => {
     roundHorses.value.forEach((horse) => {
       horse.status = 'running'
     })
@@ -246,7 +211,7 @@ function startRace () {
       }
     })
 
-    setTimeout(() => {
+    raceEndTimeout.value = setTimeout(() => {
       store.finishCurrentRace()
     }, maxTime * 1000)
   }, 4000)

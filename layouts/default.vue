@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <div>
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header Component -->
+    <AppHeader />
+
+    <!-- Main Content -->
+    <main>
       <div
         id="content-panel"
         class="transition-[margin] duration-300 ease-out"
@@ -9,29 +13,12 @@
           <slot />
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <script>
-
 export default {
-  data () {
-    return {
-
-    }
-  },
-  computed: {
-
-  },
-
-  created () {
-
-  },
-
-  methods: {
-
-  }
+  // Layout logic here if needed
 }
-
 </script>

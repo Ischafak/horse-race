@@ -41,7 +41,7 @@ export default {
         },
         {
           property: 'og:image',
-          content: '/Data/logo/atyarisi_logo.svg'
+          content: '/data/logo/atyarisi_logo.svg'
         },
         {
           property: 'og:image:alt',

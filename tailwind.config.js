@@ -1,4 +1,6 @@
-module.exports = {
+import forms from '@tailwindcss/forms'
+
+export default {
   mode: 'layers',
   content: [
     './components/**/*.vue',
@@ -203,7 +205,6 @@ module.exports = {
     }
   ],
   plugins: [
-    require('@tailwindcss/forms'),
-    require('tw-elements/dist/plugin')
+    forms
   ]
 }

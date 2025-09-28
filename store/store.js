@@ -107,6 +107,7 @@ export const useStore = defineStore('race', {
     resetRace () {
       this.raceResults = []
       this.currentRound = 0
+      this.roundHorses = [] // Mevcut tur atlarını temizle
       // Atları da sıfırla
       this.horses.forEach((horse) => {
         horse.condition = Math.floor(Math.random() * 20) + 80

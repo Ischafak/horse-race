@@ -2,7 +2,7 @@
   <div class="race-track">
     <div class="track-header">
       <div class="lap-info">
-        {{ currentRound + 1 }}. Tur {{ distance }}m
+        {{ currentRound + 1 }}. Round {{ distance }}m
       </div>
       <div class="finish-label">
         FINISH
@@ -39,17 +39,7 @@
             class="horse-container"
             :style="getHorseStyle(horse.id)"
           >
-            <NuxtLink :to="`/horse/${horse.id}`" class="block">
-              <div v-tippy="horse.name" class="horse-item" :class="{ 'horse-running': isHorseRunning(horse.id) }">
-                <v-icon
-                  name="horse-riding-icon"
-                  :is-filled="true"
-                  :icon-color="horse.color"
-                  size="dmuk-md"
-                  class="horse-icon hover:scale-110 transition-transform cursor-pointer"
-                />
-              </div>
-            </NuxtLink>
+            <HorseItem :horse="horse" />
           </div>
         </div>
       </div>
@@ -88,13 +78,6 @@ const winnerHorseId = computed(() => {
 function getTime (horseId) {
   const res = results.value.find(r => r.horseId === horseId)
   return res ? res.time : 0
-}
-
-function isHorseRunning (horseId) {
-  const horse = horses.value.find(h => h.id === horseId)
-  const status = horse ? horse.status : 'not-started'
-  console.log('isHorseRunning', horseId, status, 'running:', status === 'running')
-  return status === 'running'
 }
 
 function getHorseStyle (horseId) {

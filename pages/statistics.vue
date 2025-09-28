@@ -81,7 +81,6 @@
                       :class="`bg-${horse.color}`"
                     >
                     </div>
-                    <span class="text-sm text-gray-600">{{ horse.color }}</span>
                   </div>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">

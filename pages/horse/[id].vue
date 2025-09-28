@@ -199,7 +199,7 @@ const horseRaceHistory = computed(() => {
       }
     }
   })
-  return history.sort((a, b) => b.round - a.round)
+  return history.sort((a, b) => a.round - b.round)
 })
 
 // Chart options

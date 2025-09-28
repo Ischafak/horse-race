@@ -28,62 +28,64 @@
           All Race Results
         </h2>
 
-        <div v-for="(roundData, roundIndex) in store.allResults" :key="roundIndex" class="mb-6">
-          <h3 class="text-lg font-semibold mb-3 text-blue-600">
-            Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
-          </h3>
+        <!-- Grid Layout for Race Results -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div v-for="(roundData, roundIndex) in finishedRaces" :key="roundIndex" class="mb-6">
+            <h3 class="text-lg font-semibold mb-3 text-blue-600">
+              Round {{ roundData.round + 1 }} - {{ roundData.distance }}m
+            </h3>
 
-          <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Rank
-                  </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Horse
-                  </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Time
-                  </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Color
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr
-                  v-for="(result, resultIndex) in roundData.results"
-                  :key="resultIndex"
-                  class="hover:bg-gray-50 transition-colors"
-                >
-                  <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {{ resultIndex + 1 }}
-                  </td>
-                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                    <NuxtLink
-                      :to="`/horse/${result.horseId}`"
-                      class="text-blue-600 hover:text-blue-800 hover:underline font-medium"
-                    >
-                      {{ result.name }}
-                    </NuxtLink>
-                  </td>
-                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                    {{ result.time }}s
-                  </td>
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div
-                        class="w-4 h-4 rounded-full mr-2"
-                        :class="`bg-${result.color}`"
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Rank
+                    </th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Horse
+                    </th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Time
+                    </th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Color
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr
+                    v-for="(result, resultIndex) in roundData.results"
+                    :key="resultIndex"
+                    class="hover:bg-gray-50 transition-colors"
+                  >
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {{ resultIndex + 1 }}
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                      <NuxtLink
+                        :to="`/horse/${result.horseId}`"
+                        class="text-blue-600 hover:text-blue-800 hover:underline font-medium"
                       >
+                        {{ result.name }}
+                      </NuxtLink>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                      {{ result.time }}s
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div
+                          class="w-4 h-4 rounded-full mr-2"
+                          :class="`bg-${result.color}`"
+                        >
+                        </div>
                       </div>
-                      <span class="text-sm text-gray-600">{{ result.color }}</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -101,6 +103,7 @@ const horses = computed(() => store.allHorses)
 const roundHorses = computed(() => store.currentRoundHorses)
 const currentRound = computed(() => store.currentRound)
 const results = computed(() => store.currentRoundResults)
+const finishedRaces = computed(() => store.allResults.filter(round => round.finished))
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 
 // Ses dosyası için ref

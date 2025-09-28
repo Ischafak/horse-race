@@ -62,24 +62,19 @@ export default {
       isMobileMenuOpen: false,
       menuItems: [
         {
-          id: 1,
+          id: 'home',
           label: 'Home',
           to: '/'
         },
         {
-          id: 2,
-          label: 'Races',
-          to: '/'
+          id: 'horses',
+          label: 'Horses',
+          to: '/horses'
         },
         {
-          id: 3,
+          id: 'statistics',
           label: 'Statistics',
           to: '/statistics'
-        },
-        {
-          id: 4,
-          label: 'Settings',
-          to: '/'
         }
       ]
     }

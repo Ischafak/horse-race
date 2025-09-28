@@ -188,7 +188,7 @@ function startRace () {
     })
 
     const raceResults = roundHorses.value.map((horse) => {
-      const baseSpeed = 200
+      const baseSpeed = Math.floor(Math.random() * (41)) + 180
       const speedMultiplier = Math.max(0.7, Math.min(1.0, horse.condition / 100))
       const time = distance / (baseSpeed * speedMultiplier)
       return {

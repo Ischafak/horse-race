@@ -134,7 +134,7 @@ function getHorseStyle (horseId) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" lang="scss" scoped>
 .race-track {
   @apply bg-gray-100 rounded-lg p-5 my-5 relative;
 }
@@ -187,38 +187,14 @@ function getHorseStyle (horseId) {
   @apply absolute top-1/2 z-10;
 }
 
-.horse-icon {
-  @apply drop-shadow-md;
-}
-
-.horse-item {
-  /* Varsayılan durum - sallanma yok */
-}
-
-.horse-item.horse-running {
-  animation: horseShake 0.5s ease-in-out infinite alternate;
-}
-
-@keyframes horseShake {
-  0% {
-    transform: rotate(-10deg);
-  }
-  100% {
-    transform: rotate(10deg);
-  }
-}
-
 .finish-line {
   @apply absolute right-0 top-0 bottom-0 w-1 bg-red-600 rounded-sm;
 }
-
-/* Kazanan atın yeşil alanının içine kupa ikonu */
 .winner-lane-number::before {
   content: "🏆";
   @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-base z-30;
 }
 
-/* Kazanan atın numarasını gizle */
 .winner-lane-number .winner-text {
   @apply invisible;
 }

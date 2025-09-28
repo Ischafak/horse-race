@@ -29,3 +29,18 @@ const isHorseRunning = computed(() => {
   return props.horse.status === 'running'
 })
 </script>
+
+<style lang="scss" scoped>
+.horse-item.horse-running {
+  animation: horseShake 0.5s ease-in-out infinite alternate;
+}
+@keyframes horseShake {
+  0% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(10deg);
+  }
+}
+
+</style>

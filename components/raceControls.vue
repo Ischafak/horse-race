@@ -35,7 +35,7 @@ const store = useStore()
 const currentRoundAllResults = computed(() => store.currentRoundAllResults)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .button-group {
   display: flex;
   gap: 10px;

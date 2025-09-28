@@ -14,9 +14,16 @@
         <div
           v-for="(horse, index) in horses"
           :key="`lane-${index}`"
-          class="lane-number"
+          class="relative"
         >
-          {{ index + 1 }}
+          <div
+            class="lane-number"
+            :class="{ 'winner-lane-number': winnerHorseId === horse.id }"
+          >
+            <p class="winner-text">
+              {{ index + 1 }}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -51,18 +58,30 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useStore } from '~/store/store.js'
 
 const store = useStore()
 
-const props = defineProps({
+defineProps({
   distance: Number
 })
 
 const horses = computed(() => store.currentRoundHorses)
 const results = computed(() => store.currentRoundResults)
 const currentRound = computed(() => store.currentRound)
+
+const winnerHorseId = computed(() => {
+  const currentRoundData = store.raceResults.find(r => r.round === store.currentRound)
+  const winnerId = currentRoundData?.winnerHorseId
+
+  if (winnerId) {
+    const winnerHorse = horses.value.find(horse => horse.id === winnerId)
+    console.log('Winner horse found:', winnerHorse)
+    return winnerHorse && winnerHorse.status === 'finished' ? winnerId : null
+  }
+
+  return null
+})
 
 function getTime (horseId) {
   const res = results.value.find(r => r.horseId === horseId)
@@ -113,81 +132,44 @@ function getHorseStyle (horseId) {
 
 <style scoped>
 .race-track {
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 20px 0;
-  position: relative;
+  @apply bg-gray-100 rounded-lg p-5 my-5 relative;
 }
 
 .track-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-weight: bold;
+  @apply flex justify-between mb-2.5 font-bold;
 }
 
 .lap-info {
-  color: #dc2626;
-  font-size: 18px;
+  @apply text-red-600 text-lg;
 }
 
 .finish-label {
-  color: #dc2626;
-  font-size: 18px;
+  @apply text-red-600 text-lg;
 }
 
 .track-container {
-  display: flex;
-  position: relative;
-  background: #e5e7eb;
-  border-radius: 4px;
-  padding: 10px;
+  @apply flex relative bg-gray-200 rounded p-2.5;
 }
 
 .lane-numbers {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-right: 10px;
+  @apply flex flex-col gap-0.5 mr-2.5;
 }
 
 .lane-number {
-  width: 30px;
-  height: 40px;
-  background: #16a34a;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  border-radius: 4px;
-  font-size: 14px;
+  @apply w-7.5 h-10 bg-green-600 text-white flex items-center justify-center font-bold rounded text-sm;
 }
 
 .track-lanes {
-  flex: 1;
-  position: relative;
+  @apply flex-1 relative;
   height: 420px; /* 10 şerit * 40px + 2px gap */
 }
 
 .lane {
-  position: relative;
-  height: 40px;
-  margin-bottom: 2px;
-  border-bottom: 2px dashed #9ca3af;
-}
-
-.lane:last-child {
-  border-bottom: none;
+  @apply relative h-10 mb-0.5 border-b-2 border-dashed border-gray-400 last:border-b-0;
 }
 
 .lane-lines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  @apply absolute inset-0;
   background: repeating-linear-gradient(
     to right,
     transparent 0px,
@@ -198,13 +180,11 @@ function getHorseStyle (horseId) {
 }
 
 .horse-container {
-  position: absolute;
-  top: 50%;
-  z-index: 10;
+  @apply absolute top-1/2 z-10;
 }
 
 .horse-icon {
-  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+  @apply drop-shadow-md;
 }
 
 .horse-item {
@@ -225,12 +205,17 @@ function getHorseStyle (horseId) {
 }
 
 .finish-line {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: #dc2626;
-  border-radius: 2px;
+  @apply absolute right-0 top-0 bottom-0 w-1 bg-red-600 rounded-sm;
+}
+
+/* Kazanan atın yeşil alanının içine kupa ikonu */
+.winner-lane-number::before {
+  content: "🏆";
+  @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-base z-30;
+}
+
+/* Kazanan atın numarasını gizle */
+.winner-lane-number .winner-text {
+  @apply invisible;
 }
 </style>

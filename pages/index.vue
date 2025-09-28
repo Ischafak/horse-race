@@ -170,7 +170,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from '~/store/store.js'
 
 // Store'u kullan
@@ -182,6 +182,13 @@ const currentRound = computed(() => store.currentRound)
 const results = computed(() => store.currentRoundResults)
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 
+// Ses dosyası için ref
+const startSound = ref(null)
+
+onMounted(() => {
+  startSound.value = new Audio('/sound/race-start.mp3')
+  startSound.value.preload = 'auto'
+})
 // Store'dan atları başlat
 store.initHorses()
 
@@ -207,7 +214,12 @@ function startRace () {
 
   const distance = roundDistances[store.currentRound]
 
-  // 2 saniye sonra tüm atları aynı anda başlat
+  if (startSound.value) {
+    startSound.value.play().catch((error) => {
+      console.log('Ses çalınamadı:', error)
+    })
+  }
+
   setTimeout(() => {
     roundHorses.value.forEach((horse) => {
       horse.status = 'running'
@@ -238,7 +250,6 @@ function startRace () {
           // Sadece bu yarışta koşan atın condition'ı 10 azalt
           const oldCondition = horse.condition
           horse.condition = Math.max(10, horse.condition - 10)
-          console.log(`${horse.name} condition: ${oldCondition} → ${horse.condition}`)
         }, result.time * 1000) // Animasyon süresiyle uyumlu
       }
     })
@@ -247,7 +258,7 @@ function startRace () {
     setTimeout(() => {
       store.finishCurrentRace()
     }, maxTime * 1000)
-  }, 2000)
+  }, 4000)
 }
 
 function getHorseName (id) {

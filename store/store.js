@@ -71,7 +71,8 @@ export const useStore = defineStore('race', {
         results,
         distance,
         finished: false, // Yarış henüz bitmedi
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        winnerHorseId: results && results.length > 0 ? results[0].horseId : null
       }
 
       if (existingIndex >= 0) {

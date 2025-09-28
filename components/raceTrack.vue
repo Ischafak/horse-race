@@ -134,7 +134,7 @@ function getHorseStyle (horseId) {
 }
 </script>
 
-<style lang="scss" lang="scss" scoped>
+<style lang="scss"  scoped>
 .race-track {
   @apply bg-gray-100 rounded-lg p-5 my-5 relative;
 }

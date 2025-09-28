@@ -1,16 +1,28 @@
 <template>
   <div>
-    <h1>At Yarışı Oyunu</h1>
+    <div class="bg-gray-100 p-4 border-b-1 border-gray-200 flex justify-between items-center gap-4 md:flex-row flex-col">
+      <div>
+        <p class="text-2xl font-bold">
+          At Yarışı Oyunu
+        </p>
+      </div>
+      <div>
+        <race-controls
+          @nextRace="nextRace"
+          @startRace="startRace"
+          @resetRace="resetRace"
+        />
+      </div>
+    </div>
 
-    <race-controls
-      @nextRace="nextRace"
-      @startRace="startRace"
-    />
-
-    <race-track
-      v-if="roundHorses.length"
-      :distance="roundDistances[currentRound]"
-    />
+    <div class="px-4">
+      <div>
+        <race-track
+          v-if="roundHorses.length"
+          :distance="roundDistances[currentRound]"
+        />
+      </div>
+    </div>
 
     <div v-if="store.allResults.length" class="mt-8">
       <h2 class="text-2xl font-bold mb-4">
@@ -184,6 +196,10 @@ function nextRace () {
 
   // Yeni atları seç
   store.selectRoundHorses()
+}
+
+function resetRace () {
+  store.resetRace()
 }
 
 function startRace () {

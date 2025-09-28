@@ -1,45 +1,43 @@
 <template>
   <div>
-    <p>Round: {{ currentRound + 1 }} / 6</p>
     <div class="button-group">
-      <button :disabled="currentRound >= 6" @click="$emit('nextRace')">
-        Sonraki Yarış
-      </button>
-      <button :disabled="currentRound >= 6 || !canStartRace" @click="$emit('startRace')">
-        Yarışı Başlat
-      </button>
+      <v-button
+        text="Next Race"
+        type="primary"
+        size="sm"
+        :disabled="(store.currentRound >= store.totalRounds) || (!currentRoundAllResults?.finished)"
+        @click="$emit('nextRace')"
+      />
+      <v-button
+        text="Start Race"
+        type="primary-dark"
+        size="sm"
+        :disabled="(Object.keys(currentRoundAllResults).length !== 0)"
+        @click="$emit('startRace')"
+      />
+      <v-button
+        v-if="(store.currentRound >= store.totalRounds)"
+        text="Reset Race"
+        type="primary"
+        size="sm"
+        @click="$emit('resetRace')"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useStore } from '~/store/store.js'
+defineEmits(['nextRace', 'startRace', 'resetRace'])
 
 const store = useStore()
 
-const currentRound = computed(() => store.currentRound)
-const canStartRace = computed(() => store.currentRoundHorses.length > 0)
+const currentRoundAllResults = computed(() => store.currentRoundAllResults)
 </script>
 
 <style scoped>
 .button-group {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background: #007bff;
-  color: white;
-  cursor: pointer;
-}
-
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
 }
 </style>

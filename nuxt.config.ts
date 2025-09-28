@@ -79,12 +79,10 @@ export default defineNuxtConfig({
       hmr: process.env.NUXT_PUBLIC_NODE_ENV === 'development'
         ? {
             host: 'horse-race.test',
-            clientPort: 3000,
+            clientPort: 8084,
             protocol: 'wss'
           }
         : undefined
     }
   },
-
-  compatibilityDate: '2025-01-15'
 })

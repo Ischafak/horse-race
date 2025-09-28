@@ -10,7 +10,6 @@
     </div>
 
     <div class="track-container">
-      <!-- Şerit numaraları -->
       <div class="lane-numbers">
         <div
           v-for="(horse, index) in horses"
@@ -21,17 +20,14 @@
         </div>
       </div>
 
-      <!-- Yarış pisti -->
       <div class="track-lanes">
         <div
           v-for="(horse, index) in horses"
           :key="`track-${index}`"
           class="lane"
         >
-          <!-- Şerit çizgileri -->
           <div class="lane-lines"></div>
 
-          <!-- At ikonu -->
           <div
             class="horse-container"
             :style="getHorseStyle(horse.id)"
@@ -49,7 +45,6 @@
         </div>
       </div>
 
-      <!-- Finish çizgisi -->
       <div class="finish-line"></div>
     </div>
   </div>
@@ -82,7 +77,6 @@ function isHorseRunning (horseId) {
 }
 
 function getHorseStyle (horseId) {
-  console.log('getHorseStyle', horseId)
   const time = getTime(horseId)
   if (time === 0) {
     const rotation = Math.sin(Date.now() * 0.005 + horseId) * 3

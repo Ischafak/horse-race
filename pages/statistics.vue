@@ -12,7 +12,7 @@
             Win Distribution Chart
           </h2>
           <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <div class="chart-container">
+            <div class="chart-container max-w-md mx-auto">
               <apexchart
                 type="donut"
                 :options="chartOptions"

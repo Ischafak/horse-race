@@ -1,20 +1,14 @@
 export const useStore = defineStore('race', {
   state: () => ({
-    // Tüm atlar
     horses: [],
-    // Mevcut turda yarışan atlar
     roundHorses: [],
-    // Tüm yarış sonuçları - her tur için ayrı array
-    raceResults: [], // [{ round: 1, results: [...], distance: 1200 }, ...]
+    raceResults: [],
     currentRound: 0,
     totalRounds: 5
   }),
   getters: {
-    // Tüm atlar
     allHorses: state => state.horses,
-    // Mevcut turda yarışan atlar
     currentRoundHorses: state => state.roundHorses,
-    // Mevcut turun sonuçları
     currentRoundAllResults: (state) => {
       return state.raceResults.find(r => r.round === state.currentRound) || {}
     },
@@ -25,15 +19,13 @@ export const useStore = defineStore('race', {
     topWinningHorses: (state) => {
       const horseWins = {}
 
-      // Her at için kazanma sayısını hesapla
       state.raceResults.forEach((round) => {
         if (round.results && round.results.length > 0) {
-          const winner = round.results[0] // İlk sıradaki at kazanan
+          const winner = round.results[0]
           horseWins[winner.horseId] = (horseWins[winner.horseId] || 0) + 1
         }
       })
 
-      // Atları kazanma sayısına göre sırala
       return state.horses
         .map(horse => ({
           ...horse,
@@ -43,9 +35,8 @@ export const useStore = defineStore('race', {
     }
   },
   actions: {
-    // Atları başlat
     initHorses () {
-      if (this.horses.length > 0) { return } // Zaten varsa tekrar oluşturma
+      if (this.horses.length > 0) { return }
 
       const colors = [
         'red-500', 'green-500', 'blue-500', 'yellow-500', 'purple-500',
@@ -58,69 +49,59 @@ export const useStore = defineStore('race', {
         id: i + 1,
         name: `Horse ${i + 1}`,
         color: colors[i % colors.length],
-        condition: Math.floor(Math.random() * 20) + 80, // 80-100 arası condition
-        status: 'not-started' // not-started, running, finished
+        condition: Math.floor(Math.random() * 20) + 80,
+        status: 'not-started'
       }))
     },
 
-    // Tur sonuçlarını kaydet
     saveRoundResults (round, results, distance) {
       const existingIndex = this.raceResults.findIndex(r => r.round === round)
       const roundData = {
         round,
         results,
         distance,
-        finished: false, // Yarış henüz bitmedi
+        finished: false,
         timestamp: new Date().toISOString(),
         winnerHorseId: results && results.length > 0 ? results[0].horseId : null
       }
 
       if (existingIndex >= 0) {
-        // Güncelle
         this.raceResults[existingIndex] = roundData
       } else {
-        // Yeni ekle
         this.raceResults.push(roundData)
       }
     },
 
-    // Sonraki tura geç
     nextRound () {
       if (this.currentRound < this.totalRounds) {
         this.currentRound++
       }
     },
 
-    // Mevcut turda yarışan atları seç
     selectRoundHorses () {
       this.roundHorses = [...this.horses]
         .sort(() => Math.random() - 0.5)
         .slice(0, 10)
 
-      // Atları not-started yap
       this.roundHorses.forEach((horse) => {
         horse.status = 'not-started'
       })
     },
 
-    // Yarışı sıfırla
     resetRace () {
       this.raceResults = []
       this.currentRound = 0
-      this.roundHorses = [] // Mevcut tur atlarını temizle
-      // Atları da sıfırla
+      this.roundHorses = []
       this.horses.forEach((horse) => {
         horse.condition = Math.floor(Math.random() * 20) + 80
         horse.status = 'not-started'
       })
     },
 
-    // Belirli turun sonuçlarını getir
     getRoundResults (round) {
       return this.raceResults.find(r => r.round === round)
     },
 
-    // Mevcut turun yarışını bitir
     finishCurrentRace () {
       const roundIndex = this.raceResults.findIndex(r => r.round === this.currentRound)
       if (roundIndex >= 0) {

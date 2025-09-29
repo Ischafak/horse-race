@@ -10,7 +10,7 @@
         <Lottie />
       </div>
     </loading>
-    <!-- Race Controls -->
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
       <div class="bg-white rounded-lg shadow-sm p-6">
         <race-controls
@@ -21,7 +21,6 @@
       </div>
     </div>
 
-    <!-- Race Track -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div>
         <race-track
@@ -31,14 +30,12 @@
       </div>
     </div>
 
-    <!-- Results Section -->
     <div v-if="store.allResults.length" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
       <div class="bg-white rounded-lg shadow-sm p-6">
         <h2 class="text-2xl font-bold mb-6 text-gray-900">
           All Race Results
         </h2>
 
-        <!-- Grid Layout for Race Results -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div v-for="(roundData, roundIndex) in finishedRaces" :key="roundIndex" class="mb-6">
             <h3 class="text-lg font-semibold mb-3 text-blue-600">

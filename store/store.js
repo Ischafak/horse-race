@@ -98,10 +98,6 @@ export const useStore = defineStore('race', {
       })
     },
 
-    getRoundResults (round) {
-      return this.raceResults.find(r => r.round === round)
-    },
-
     finishCurrentRace () {
       const roundIndex = this.raceResults.findIndex(r => r.round === this.currentRound)
       if (roundIndex >= 0) {

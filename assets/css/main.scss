@@ -1489,5 +1489,5 @@ $delayStep: 20ms;
   z-index: 1000 !important;
 }
 .container {
-  @apply px-4 py-8 mdv2:py-12 mdv2:px-6 mx-auto;
+  @apply px-4 py-8 md:py-12 md:px-6 mx-auto;
 }

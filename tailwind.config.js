@@ -124,6 +124,7 @@ export default {
           800: '#4e342e',
           900: '#3e2723'
         }
+
       },
       fontSize: {
         'muk-3xs': ['8px', { lineHeight: '12px' }],
@@ -142,6 +143,9 @@ export default {
       },
       borderWidth: {
         1: '1px'
+      },
+      spacing: {
+        4.5: '18px'
       }
     }
   },

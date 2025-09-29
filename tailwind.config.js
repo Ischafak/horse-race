@@ -10,17 +10,7 @@ export default {
     'node_modules/tailvue/dist/tailvue.es.js'
   ],
   theme: {
-    container: {
-      center: true
-    },
     extend: {
-      screens: {
-        xs: '420px',
-        mdv2: '992px'
-      },
-      borderRadius: {
-        32: '32px'
-      },
       boxShadow: {
         'muk-xs': '0px 1px 2px 0px rgba(10, 13, 18, 0.05)',
         'muk-sm': '0px 1px 3px 0px rgba(10, 13, 18, 0.10), 0px 1px 2px 0px rgba(10, 13, 18, 0.06)',
@@ -32,7 +22,6 @@ export default {
       },
 
       colors: {
-
         brand: {
           25: '#F5FAFF',
           50: '#EFF8FF',
@@ -136,12 +125,6 @@ export default {
           800: '#4e342e',
           900: '#3e2723'
         }
-
-      },
-      opacity: {
-        12: '.12',
-        16: '.16',
-        56: '.56'
       },
       fontSize: {
         'muk-3xs': ['8px', { lineHeight: '12px' }],
@@ -159,30 +142,7 @@ export default {
         'dmuk-2xl': ['72px', { lineHeight: '90px', letterSpacing: '-1.44px' }]
       },
       borderWidth: {
-        0.3: '0.3px',
-        0.8: '0.8px',
-        1: '1px',
-        1.2: '1.2px',
-        1.5: '1.5px',
-        1.75: '1.75px',
-        2.4: '2.4px'
-      },
-      spacing: {
-        4.5: '18px',
-        5.5: '22px',
-        7.5: '31px',
-        13: '52px',
-        18: '72px',
-        22: '88px',
-        26: '102px',
-        27: '106px',
-        29: '116px',
-        34: '132px',
-        42: '168px',
-        50: '202px'
-      },
-      inset: {
-        1.75: '1.75px'
+        1: '1px'
       }
     }
   },

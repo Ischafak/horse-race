@@ -6,7 +6,6 @@
           🏆 Top Winning Horses
         </h1>
 
-        <!-- Statistics Chart -->
         <div v-if="store.allResults.length" class="mb-8">
           <h2 class="text-xl font-bold text-gray-900 mb-4">
             Win Distribution Chart
@@ -121,9 +120,8 @@ import { getTailwindColor } from '~/utils/colors.js'
 
 const store = useStore()
 
-// Chart options
 const chartOptions = computed(() => {
-  const topHorses = store.topWinningHorses.filter(horse => horse.wins > 0).slice(0, 8) // Sadece kazanan atlar
+  const topHorses = store.topWinningHorses.filter(horse => horse.wins > 0).slice(0, 8)
 
   return {
     chart: {
@@ -198,9 +196,8 @@ const chartOptions = computed(() => {
   }
 })
 
-// Chart series
 const chartSeries = computed(() => {
-  const topHorses = store.topWinningHorses.filter(horse => horse.wins > 0).slice(0, 8) // Sadece kazanan atlar
+  const topHorses = store.topWinningHorses.filter(horse => horse.wins > 0).slice(0, 8)
 
   return topHorses.map(horse => horse.wins)
 })

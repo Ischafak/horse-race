@@ -1,5 +1,15 @@
 <template>
   <div class="py-6">
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+      :enforce-focus="true"
+      class="rounded-lg"
+    >
+      <div>
+        <Lottie />
+      </div>
+    </loading>
     <!-- Race Controls -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
       <div class="bg-white rounded-lg shadow-sm p-6">
@@ -98,6 +108,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from '~/store/store.js'
 
 const store = useStore()
+const isLoading = ref(false)
 
 const horses = computed(() => store.allHorses)
 const roundHorses = computed(() => store.currentRoundHorses)
@@ -106,10 +117,8 @@ const results = computed(() => store.currentRoundResults)
 const finishedRaces = computed(() => store.allResults.filter(round => round.finished))
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 
-// Ses dosyası için ref
 const startSound = ref(null)
 
-// Race timeout'larını sakla
 const raceStartTimeout = ref(null)
 const raceEndTimeout = ref(null)
 
@@ -118,7 +127,6 @@ onMounted(() => {
   startSound.value.preload = 'auto'
 })
 
-// Race timeout'larını temizle
 function clearRaceTimeouts () {
   if (raceStartTimeout.value) {
     clearTimeout(raceStartTimeout.value)
@@ -133,19 +141,15 @@ function clearRaceTimeouts () {
 onBeforeUnmount(() => {
   clearRaceTimeouts()
 
-  // Yarış bitmeden çıkarsa o turun sonuçlarını sil
   const currentRoundData = store.raceResults.find(r => r.round === store.currentRound)
   if (currentRoundData && !currentRoundData.finished) {
-    // O turun sonuçlarını sil
     store.raceResults = store.raceResults.filter(r => r.round !== store.currentRound)
 
-    // Atları not-started yap
     store.roundHorses.forEach((horse) => {
       horse.status = 'not-started'
     })
   }
 
-  // Ses çalıyorsa durdur
   if (startSound.value) {
     startSound.value.pause()
     startSound.value.currentTime = 0
@@ -154,7 +158,6 @@ onBeforeUnmount(() => {
 
 store.initHorses()
 
-// Sadece ilk yüklemede atlar seçilsin
 if (store.currentRoundHorses.length === 0) {
   store.selectRoundHorses()
 }

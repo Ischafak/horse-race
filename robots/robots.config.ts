@@ -1,6 +1,0 @@
-export default [
-  {
-    UserAgent: '*',
-    Allow: '/'
-  }
-];

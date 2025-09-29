@@ -2,7 +2,6 @@
   <div class="py-6">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div v-if="horse" class="bg-white rounded-lg shadow-sm p-6">
-        <!-- Header -->
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center">
             <div class="w-16 h-16 rounded-full mr-4 flex items-center justify-center" :class="`bg-${horse.color}`">
@@ -27,7 +26,6 @@
           </NuxtLink>
         </div>
 
-        <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <!-- Condition -->
           <div class="bg-gray-50 rounded-lg p-4">
@@ -46,7 +44,6 @@
             </div>
           </div>
 
-          <!-- Wins -->
           <div class="bg-gray-50 rounded-lg p-4">
             <h3 class="text-sm font-medium text-gray-500 mb-2">
               Total Wins
@@ -59,7 +56,6 @@
             </p>
           </div>
 
-          <!-- Win Rate -->
           <div class="bg-gray-50 rounded-lg p-4">
             <h3 class="text-sm font-medium text-gray-500 mb-2">
               Win Rate
@@ -73,7 +69,6 @@
           </div>
         </div>
 
-        <!-- Race History -->
         <div class="mb-8">
           <h2 class="text-xl font-bold text-gray-900 mb-4">
             Race History
@@ -112,7 +107,6 @@
           </div>
         </div>
 
-        <!-- Performance Chart -->
         <div class="mb-8">
           <h2 class="text-xl font-bold text-gray-900 mb-4">
             Performance Over Time
@@ -129,7 +123,6 @@
           </div>
         </div>
 
-        <!-- Color Info -->
         <div class="bg-gray-50 rounded-lg p-4">
           <h3 class="text-sm font-medium text-gray-500 mb-2">
             Horse Color
@@ -141,7 +134,6 @@
         </div>
       </div>
 
-      <!-- Horse Not Found -->
       <div v-else class="bg-white rounded-lg shadow-sm p-6 text-center">
         <div class="text-6xl mb-4">
           🐎
@@ -202,7 +194,6 @@ const horseRaceHistory = computed(() => {
   return history.sort((a, b) => a.round - b.round)
 })
 
-// Chart options
 const chartOptions = computed(() => {
   return {
     chart: {
@@ -229,7 +220,7 @@ const chartOptions = computed(() => {
       },
       min: 1,
       max: 10,
-      reversed: true // 1st place at top
+      reversed: true
     },
     title: {
       text: 'Race Performance',
@@ -255,7 +246,6 @@ const chartOptions = computed(() => {
   }
 })
 
-// Chart series
 const chartSeries = computed(() => {
   if (horseRaceHistory.value.length === 0) {
     return [{

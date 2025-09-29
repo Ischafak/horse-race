@@ -105,17 +105,16 @@ import { useStore } from '~/store/store.js'
 
 const store = useStore()
 
-// Her at için kazanma sayısını hesapla
 const horseWins = computed(() => {
   const wins = {}
-  
-  store.allResults.forEach(round => {
+
+  store.allResults.forEach((round) => {
     if (round.results && round.results.length > 0) {
-      const winner = round.results[0] // İlk sıradaki at kazanan
+      const winner = round.results[0]
       wins[winner.horseId] = (wins[winner.horseId] || 0) + 1
     }
   })
-  
+
   return wins
 })
 </script>

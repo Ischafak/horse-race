@@ -92,10 +92,9 @@ export const useStore = defineStore('race', {
       this.raceResults = []
       this.currentRound = 0
       this.roundHorses = []
-      this.horses.forEach((horse) => {
-        horse.condition = Math.floor(Math.random() * 20) + 80
-        horse.status = 'not-started'
-      })
+      this.horses = []
+      this.initHorses()
+      this.selectRoundHorses()
     },
 
     finishCurrentRace () {

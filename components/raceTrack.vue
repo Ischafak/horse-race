@@ -29,7 +29,7 @@
 
       <div class="track-lanes">
         <div
-          v-for="(horse, index) in horses"
+          v-for="(horse, index) in horsesWithResults"
           :key="`track-${index}`"
           class="lane"
         >
@@ -59,7 +59,18 @@ defineProps({
 })
 
 const horses = computed(() => store.currentRoundHorses)
-const results = computed(() => store.currentRoundResults)
+const horsesWithResults = computed(() => {
+  const roundHorses = store.currentRoundHorses
+  const roundResults = store.currentRoundResults
+
+  return roundHorses.map((horse) => {
+    const result = roundResults.find(r => r.horseId === horse.id)
+    return {
+      ...horse,
+      finishTime: result ? result.time : 0
+    }
+  })
+})
 const currentRound = computed(() => store.currentRound)
 
 const winnerHorseId = computed(() => {
@@ -75,13 +86,8 @@ const winnerHorseId = computed(() => {
   return null
 })
 
-function getTime (horseId) {
-  const res = results.value.find(r => r.horseId === horseId)
-  return res ? res.time : 0
-}
-
 function getHorseStyle (horse) {
-  const time = getTime(horse.id)
+  const time = horse.finishTime
 
   if (!horse || horse.status === 'not-started' || time === 0) {
     return {

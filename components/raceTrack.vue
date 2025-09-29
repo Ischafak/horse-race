@@ -37,7 +37,7 @@
 
           <div
             class="horse-container"
-            :style="getHorseStyle(horse.id)"
+            :style="getHorseStyle(horse)"
           >
             <HorseItem :horse="horse" />
           </div>
@@ -80,21 +80,17 @@ function getTime (horseId) {
   return res ? res.time : 0
 }
 
-function getHorseStyle (horseId) {
-  const horse = horses.value.find(h => h.id === horseId)
-  const time = getTime(horseId)
+function getHorseStyle (horse) {
+  const time = getTime(horse.id)
 
-  // Eğer at henüz başlamamışsa veya yarış bitmemişse başlangıç pozisyonunda
   if (!horse || horse.status === 'not-started' || time === 0) {
-    const rotation = Math.sin(Date.now() * 0.005 + horseId) * 3
     return {
       left: '0%',
-      transform: `translateY(-50%) rotate(${rotation}deg)`,
+      transform: 'translateY(-50%)',
       transition: 'left 0.1s ease-out, transform 0.1s ease-out'
     }
   }
 
-  // Eğer at koşuyorsa animasyonu başlat
   if (horse.status === 'running') {
     const progress = 100
     const animationDuration = time
@@ -116,7 +112,6 @@ function getHorseStyle (horseId) {
     }
   }
 
-  // Eğer at bitirmişse bitiş çizgisinde
   if (horse.status === 'finished') {
     return {
       left: '100%',
@@ -125,7 +120,6 @@ function getHorseStyle (horseId) {
     }
   }
 
-  // Varsayılan olarak başlangıç pozisyonu
   return {
     left: '0%',
     transform: 'translateY(-50%)',

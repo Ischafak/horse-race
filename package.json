@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --https --port 8084 --host horse-race.test",
+    "dev": "nuxt dev --https --port 8085 --host horse-race.test",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",

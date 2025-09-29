@@ -5,7 +5,6 @@ export default {
   content: [
     './components/**/*.vue',
     './pages/*.vue',
-    './node_modules/tw-elements/dist/js/**/*.js',
     './assets/css/**/*.{scss,css}',
     'node_modules/tailvue/dist/tailvue.es.js'
   ],

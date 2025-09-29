@@ -107,10 +107,8 @@ import { useStore } from '~/store/store.js'
 const store = useStore()
 const isLoading = ref(false)
 
-const horses = computed(() => store.allHorses)
 const roundHorses = computed(() => store.currentRoundHorses)
 const currentRound = computed(() => store.currentRound)
-const results = computed(() => store.currentRoundResults)
 const finishedRaces = computed(() => store.allResults.filter(round => round.finished))
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 

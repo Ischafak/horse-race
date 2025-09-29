@@ -160,7 +160,7 @@ function getHorseStyle (horseId) {
 }
 
 .lane-number {
-  @apply w-7.5 h-10 bg-green-600 text-white flex items-center justify-center font-bold rounded text-sm;
+  @apply w-8 h-10 bg-green-600 text-white flex items-center justify-center font-bold rounded text-sm;
 }
 
 .track-lanes {

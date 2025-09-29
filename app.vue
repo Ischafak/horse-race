@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { mapStores } from 'pinia'
 export default {
   provide () {
     return {
@@ -16,13 +15,11 @@ export default {
     }
   },
   setup () {
-    // window.addEventListener('scroll', this.handleScroll);
     const title = ref('At Yarışı Oyunu')
     const description = ref(
       'At Yarışı Oyunu'
     )
 
-    // This will be reactive even you change title/description above
     useHead({
       title,
       meta: [
